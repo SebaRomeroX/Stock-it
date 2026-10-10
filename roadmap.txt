@@ -1,0 +1,92 @@
+==============================================================
+ Stock-it — Store Management App
+ Roadmap / Decision Log / Goals
+==============================================================
+Format: each entry = date | phase | status | what changed |
+decisions + rationale | next goal.
+Append new entries at the bottom. Never delete history.
+
+--------------------------------------------------------------
+PHASE 1 — SETUP  [DONE]  2026-10-10
+--------------------------------------------------------------
+What:
+  - Project skeleton: index.html, css/styles.css, js/main.js
+  - Mobile-first viewport + base styles, dark theme by default
+  - roadmap.txt created (this file)
+
+Decisions:
+  - Stack: plain HTML + CSS + JS. Zero dependencies, no npm,
+    no build step, no framework. Rationale: simplest possible
+    toolchain, everything runs by opening index.html.
+  - Modules: native ES modules (type="module"). Rationale:
+    modularity without tooling. Requires serving over HTTP
+    (e.g. `python3 -m http.server`) instead of file:// —
+    accepted tradeoff.
+  - Persistence: localStorage with JSON serialization.
+    Rationale: zero deps, synchronous, enough for a small
+    store. Escape hatch: switch storage.js to IndexedDB later
+    without touching feature code (see storage contract below).
+  - Theme: CSS custom properties, dark-first, light theme
+    ready to add via [data-theme="light"].
+  - Layout: single page, bottom navigation bar (thumb-reach),
+    max-width container so it also looks OK on desktop.
+
+Storage contract (storage.js):
+  - load(key) -> parsed object or default
+  - save(key, value) -> writes JSON
+  - reset(key) -> removes key
+  Feature modules never touch localStorage directly.
+
+Next goal: Phase 2 — data layer (storage.js).
+
+--------------------------------------------------------------
+PHASE 2 — DATA LAYER  [PENDING]
+--------------------------------------------------------------
+Goal: storage.js with load/save/reset + product schema
+      validation. Seed data on first run.
+Product schema (draft):
+  { id, name, sku, price, qty, category, createdAt, updatedAt }
+
+--------------------------------------------------------------
+PHASE 3 — PRODUCT CRUD  [PENDING]
+--------------------------------------------------------------
+Goal: add / edit / delete products. Form + list views.
+
+--------------------------------------------------------------
+PHASE 4 — INVENTORY MOVEMENTS  [PENDING]
+--------------------------------------------------------------
+Goal: stock in / stock out / adjust, with per-product history.
+Movement schema (draft): { id, productId, type, qty, note, at }
+
+--------------------------------------------------------------
+PHASE 5 — LIST, SEARCH & FILTERS  [PENDING]
+--------------------------------------------------------------
+Goal: search by name/sku, category filter, sort, low-stock
+      highlight.
+
+--------------------------------------------------------------
+PHASE 6 — DASHBOARD  [PENDING]
+--------------------------------------------------------------
+Goal: totals (products, units, stock value), low-stock alerts.
+
+--------------------------------------------------------------
+PHASE 7 — EXPORT / IMPORT  [PENDING]
+--------------------------------------------------------------
+Goal: JSON backup download + restore. CSV export for lists.
+
+--------------------------------------------------------------
+PHASE 8 — POLISH  [PENDING]
+--------------------------------------------------------------
+Goal: PWA manifest + icons, offline, light theme, a11y pass,
+      empty states, confirm dialogs.
+
+--------------------------------------------------------------
+BACKLOG (ideas, unordered)
+--------------------------------------------------------------
+  - Categories management screen
+  - Suppliers
+  - Sales recording (auto-decrement stock)
+  - Barcode scanning via camera (would need a lib — revisit,
+    conflicts with 0-deps rule)
+  - Multi-store / multi-user (would need a backend — out of
+    scope for v1)

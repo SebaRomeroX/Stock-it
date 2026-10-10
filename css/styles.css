@@ -1,0 +1,137 @@
+/* Stock-it — mobile-first, zero dependencies */
+
+:root {
+  --bg: #0f1115;
+  --surface: #171a21;
+  --surface-2: #1f2430;
+  --text: #e8eaf0;
+  --muted: #8b93a7;
+  --accent: #4f8cff;
+  --accent-contrast: #ffffff;
+  --danger: #ff5c5c;
+  --ok: #3ddc84;
+  --radius: 14px;
+  --gap: 12px;
+  --nav-h: 64px;
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+[data-theme="light"] {
+  --bg: #f4f6fa;
+  --surface: #ffffff;
+  --surface-2: #e9edf5;
+  --text: #141824;
+  --muted: #5d657a;
+  --accent: #2f6fe0;
+  --accent-contrast: #ffffff;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.45;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.app {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+/* Header */
+.app-header {
+  padding: calc(env(safe-area-inset-top) + 16px) 16px 12px;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.app-title {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.app-tagline {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+/* Main */
+.app-main {
+  flex: 1;
+  padding: 4px 16px calc(var(--nav-h) + 24px);
+}
+
+/* Bottom nav */
+.app-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: calc(var(--nav-h) + env(safe-area-inset-bottom));
+  padding-bottom: env(safe-area-inset-bottom);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid var(--surface-2);
+}
+
+.nav-btn {
+  flex: 1;
+  height: 100%;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.nav-btn .nav-icon { font-size: 1.2rem; line-height: 1; }
+.nav-btn .nav-label { font-size: 0.7rem; }
+
+.nav-btn.is-active { color: var(--accent); }
+
+/* Components */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--surface-2);
+  border-radius: var(--radius);
+  padding: var(--gap);
+  margin-bottom: var(--gap);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 32px 16px;
+}
+
+.muted { color: var(--muted); font-size: 0.85rem; }
+
+code {
+  background: var(--surface-2);
+  padding: 1px 5px;
+  border-radius: 6px;
+  font-size: 0.85em;
+}
+
+@media (min-width: 640px) {
+  .app { border-left: 1px solid var(--surface-2); border-right: 1px solid var(--surface-2); }
+}
