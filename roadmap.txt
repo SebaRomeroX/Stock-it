@@ -40,17 +40,42 @@ Storage contract (storage.js):
 Next goal: Phase 2 — data layer (storage.js).
 
 --------------------------------------------------------------
-PHASE 2 — DATA LAYER  [PENDING]
+PHASE 2 — DATA LAYER  [DONE]  2026-10-10
 --------------------------------------------------------------
-Goal: storage.js with load/save/reset + product schema
-      validation. Seed data on first run.
-Product schema (draft):
-  { id, name, sku, price, qty, category, createdAt, updatedAt }
+What: js/storage.js — load(key, fallback) / save(key, value) /
+      reset(key) over localStorage with `stockit.` prefix,
+      JSON serialization, try/catch so bad data never crashes
+      a view (falls back to default).
+
+Decisions:
+  - Feature modules never touch localStorage directly
+    (storage contract from Phase 1 kept).
 
 --------------------------------------------------------------
-PHASE 3 — PRODUCT CRUD  [PENDING]
+PHASE 3 — PRODUCTS: ADD / LIST / QTY  [DONE]  2026-10-10
 --------------------------------------------------------------
-Goal: add / edit / delete products. Form + list views.
+What:
+  - js/products.js: add(name, qty), setQty(id, qty),
+    adjustQty(id, delta), remove(id), list(), render()
+  - Products tab: add form (name + qty, default 1) on top,
+    product list below with −/qty/+ controls and delete (×)
+  - Quantities clamp at 0; integers only
+  - Full innerHTML re-render after each mutation
+  - Delete asks for confirmation
+
+Decisions:
+  - Schema trimmed to { id, name, qty, createdAt, updatedAt }
+    for now — sku, price, category deferred to the phase that
+    needs them (Rationale: keep the first feature minimal).
+  - Full list re-render instead of patching single rows.
+    Rationale: simplest correct code; fine at small store
+    scale (hundreds of rows). Revisit only if slow.
+  - Validation in products.js (throws Error) so UI shows the
+    message via a transient form error.
+  - EscapeHtml on names before injecting into innerHTML
+    (XSS-safe even though data is local).
+
+Next goal: Phase 4 — inventory movements (history per product).
 
 --------------------------------------------------------------
 PHASE 4 — INVENTORY MOVEMENTS  [PENDING]

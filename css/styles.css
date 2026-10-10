@@ -132,6 +132,120 @@ code {
   font-size: 0.85em;
 }
 
+/* Forms & buttons */
+.add-form { display: flex; flex-direction: column; gap: var(--gap); }
+
+.add-form-row { display: flex; gap: var(--gap); }
+
+.text-input {
+  width: 100%;
+  background: var(--surface-2);
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  color: var(--text);
+  font: inherit;
+  padding: 12px 14px;
+  min-height: 48px;
+}
+
+.text-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.qty-field { max-width: 96px; -moz-appearance: textfield; }
+.qty-field::-webkit-outer-spin-button,
+.qty-field::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+.btn {
+  border: 0;
+  border-radius: var(--radius);
+  font: inherit;
+  font-weight: 600;
+  padding: 12px 20px;
+  min-height: 48px;
+  cursor: pointer;
+}
+
+.btn-primary { background: var(--accent); color: var(--accent-contrast); }
+.btn-primary:active { filter: brightness(0.9); }
+
+.form-error { color: var(--danger); font-size: 0.85rem; margin: 0; }
+
+/* Product list */
+.product-list { list-style: none; margin: 0; padding: 0; }
+
+.product-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--surface);
+  border: 1px solid var(--surface-2);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  margin-bottom: var(--gap);
+}
+
+.product-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.product-row.is-out .product-name { color: var(--muted); }
+
+.qty-controls { display: flex; align-items: center; gap: 6px; }
+
+.qty-btn {
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--surface-2);
+  border-radius: 10px;
+  background: var(--surface-2);
+  color: var(--text);
+  font-size: 1.3rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.qty-btn:active { background: var(--accent); color: var(--accent-contrast); }
+
+.qty-input {
+  width: 56px;
+  height: 44px;
+  text-align: center;
+  background: var(--bg);
+  border: 1px solid var(--surface-2);
+  border-radius: 10px;
+  color: var(--text);
+  font: inherit;
+  font-weight: 600;
+  -moz-appearance: textfield;
+}
+
+.qty-input::-webkit-outer-spin-button,
+.qty-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+.qty-input:focus { outline: none; border-color: var(--accent); }
+
+.delete-btn {
+  width: 36px;
+  height: 36px;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.delete-btn:active { color: var(--danger); }
+
+.list-summary { text-align: center; }
+
 @media (min-width: 640px) {
   .app { border-left: 1px solid var(--surface-2); border-right: 1px solid var(--surface-2); }
 }
