@@ -74,7 +74,12 @@ export function remove(id) {
 }
 
 export function render() {
-  const products = all();
+  // Out-of-stock first, original order preserved otherwise.
+  const products = all().slice().sort((a, b) => {
+    const aOut = a.qty === 0 ? 0 : 1;
+    const bOut = b.qty === 0 ? 0 : 1;
+    return aOut - bOut;
+  });
 
   if (products.length === 0) {
     return `
@@ -89,6 +94,7 @@ export function render() {
       (p) => `
       <li class="product-row${p.qty === 0 ? ' is-out' : ''}" data-id="${p.id}">
         <span class="product-name">${escapeHtml(p.name)}</span>
+        ${p.qty === 0 ? '<span class="stock-badge">No stock</span>' : ''}
         <div class="qty-controls">
           <button class="qty-btn" type="button" data-action="dec" aria-label="Decrease quantity of ${escapeHtml(p.name)}">−</button>
           <input class="qty-input" type="number" inputmode="numeric" min="0" step="1"

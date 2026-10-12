@@ -78,6 +78,21 @@ Decisions:
 Next goal: Phase 4 — inventory movements (history per product).
 
 --------------------------------------------------------------
+UI REFINEMENTS (incremental, between phases)
+--------------------------------------------------------------
+2026-10-12 | No-stock badge + sort to top  [DONE]
+  - Products with qty === 0 render a red "No stock" pill next
+    to the name and float to the top of the list.
+  - Decisions:
+    - Sorting happens at render time only; stored order is
+      untouched (stable sort keeps original order within
+      each group).
+    - Row stays interactive at qty 0 (bump + to restock →
+      badge disappears and row re-sorts on next render).
+    - Replaced the old muted-name treatment: name stays
+      readable, badge carries the signal.
+
+--------------------------------------------------------------
 PHASE 4 — INVENTORY MOVEMENTS  [PENDING]
 --------------------------------------------------------------
 Goal: stock in / stock out / adjust, with per-product history.

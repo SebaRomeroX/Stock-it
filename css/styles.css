@@ -195,7 +195,18 @@ code {
   font-weight: 500;
 }
 
-.product-row.is-out .product-name { color: var(--muted); }
+.stock-badge {
+  flex-shrink: 0;
+  background: color-mix(in srgb, var(--danger) 18%, transparent);
+  color: var(--danger);
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 3px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
 
 .qty-controls { display: flex; align-items: center; gap: 6px; }
 
