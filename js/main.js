@@ -16,6 +16,8 @@ function productsTemplate() {
       <div class="add-form-row">
         <input class="text-input qty-field" type="number" id="p-qty" name="qty"
                inputmode="numeric" min="0" step="1" value="1" aria-label="Quantity">
+        <input class="text-input price-field" type="number" id="p-price" name="price"
+               inputmode="decimal" min="0" step="0.01" placeholder="Price" aria-label="Price">
         <button class="btn btn-primary" type="submit">Add</button>
       </div>
       <p class="form-error" id="form-error" hidden></p>
@@ -44,10 +46,12 @@ function bindProductsView() {
     e.preventDefault();
     const nameInput = document.getElementById('p-name');
     const qtyInput = document.getElementById('p-qty');
+    const priceInput = document.getElementById('p-price');
     try {
-      products.add(nameInput.value, qtyInput.value);
+      products.add(nameInput.value, qtyInput.value, priceInput.value);
       nameInput.value = '';
       qtyInput.value = '1';
+      priceInput.value = '';
       nameInput.focus();
       renderProductList();
     } catch (err) {
@@ -67,7 +71,18 @@ function bindProductsView() {
 
     if (action === 'inc') products.adjustQty(id, 1);
     else if (action === 'dec') products.adjustQty(id, -1);
-    else if (action === 'del') {
+    else if (action === 'price') {
+      const name = row.querySelector('.product-name').textContent;
+      const current = row.querySelector('.product-total').textContent;
+      const input = prompt(`Price for "${name}" (${current} total):`, row.dataset.price || '0');
+      if (input === null) return;
+      try {
+        products.setPrice(id, input);
+      } catch (err) {
+        showFormError(err.message);
+        return;
+      }
+    } else if (action === 'del') {
       const name = row.querySelector('.product-name').textContent;
       if (!confirm(`Delete "${name}"?`)) return;
       products.remove(id);

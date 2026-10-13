@@ -135,7 +135,7 @@ code {
 /* Forms & buttons */
 .add-form { display: flex; flex-direction: column; gap: var(--gap); }
 
-.add-form-row { display: flex; gap: var(--gap); }
+.add-form-row { display: flex; gap: var(--gap); flex-wrap: wrap; }
 
 .text-input {
   width: 100%;
@@ -154,6 +154,36 @@ code {
 }
 
 .qty-field { max-width: 96px; -moz-appearance: textfield; }
+.price-field { max-width: 120px; -moz-appearance: textfield; }
+
+.product-info { flex: 1; min-width: 0; }
+
+.product-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.product-meta {
+  display: block;
+  border: 0;
+  background: none;
+  padding: 2px 0 0;
+  margin: 0;
+  font: inherit;
+  font-size: 0.78rem;
+  color: var(--muted);
+  text-align: left;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.product-total { color: var(--text); font-weight: 600; }
+
+.storage-value { color: var(--text); font-weight: 700; }
 .qty-field::-webkit-outer-spin-button,
 .qty-field::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 

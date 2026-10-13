@@ -92,6 +92,25 @@ UI REFINEMENTS (incremental, between phases)
     - Replaced the old muted-name treatment: name stays
       readable, badge carries the signal.
 
+2026-10-12 | Price + item/storage value  [DONE]
+  - Products now carry a price: chip line 2 shows
+    "$2.50 × 4 = $10.00" (tap to edit price via prompt);
+    summary line under the list shows total storage value.
+  - Schema: price added { ..., price } (cents-based math).
+  - Decisions:
+    - Money math done in cents (unit price × 100) at every
+      total to avoid float drift; prices stored as decimals
+      rounded to 2 dp.
+    - Migration on read: stored products without price get
+      price 0 (no write migration).
+    - Currency = USD via Intl.NumberFormat, single CURRENCY
+      constant in products.js — swap when Settings (Phase 7)
+      lands.
+    - Price editing = prompt() on the meta line for now;
+      replace with a proper edit form in the CRUD phase.
+    - Add form: [name] / [qty] [price] [Add], wraps on
+      narrow screens.
+
 --------------------------------------------------------------
 PHASE 4 — INVENTORY MOVEMENTS  [PENDING]
 --------------------------------------------------------------
