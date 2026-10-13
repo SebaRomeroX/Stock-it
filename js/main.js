@@ -2,27 +2,29 @@
 // Views swap into #view; nav buttons highlight the active one.
 
 import * as products from './products.js';
+import * as modal from './modal.js';
 
 const viewEl = document.getElementById('view');
 const navButtons = document.querySelectorAll('.nav-btn');
+
+// --- transient toast (for errors outside a modal) ------------------
+
+const toastEl = document.getElementById('toast');
+let toastTimer;
+
+function showToast(message) {
+  toastEl.textContent = message;
+  toastEl.hidden = false;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => (toastEl.hidden = true), 2500);
+}
 
 // --- Products view -------------------------------------------------
 
 function productsTemplate() {
   return `
-    <form class="add-form card" id="add-form" novalidate>
-      <input class="text-input" type="text" id="p-name" name="name"
-             placeholder="Product name" autocomplete="off" required>
-      <div class="add-form-row">
-        <input class="text-input qty-field" type="number" id="p-qty" name="qty"
-               inputmode="numeric" min="0" step="1" value="1" aria-label="Quantity">
-        <input class="text-input price-field" type="number" id="p-price" name="price"
-               inputmode="decimal" min="0" step="0.01" placeholder="Price" aria-label="Price">
-        <button class="btn btn-primary" type="submit">Add</button>
-      </div>
-      <p class="form-error" id="form-error" hidden></p>
-    </form>
-    <div id="product-list">${products.render()}</div>`;
+    <div id="product-list">${products.render()}</div>
+    <button class="fab" id="new-product-btn" type="button" aria-label="New product">+</button>`;
 }
 
 function renderProductList() {
@@ -30,34 +32,33 @@ function renderProductList() {
   if (el) el.innerHTML = products.render();
 }
 
-function showFormError(msg) {
-  const el = document.getElementById('form-error');
-  if (!el) return;
-  el.textContent = msg;
-  el.hidden = false;
-  clearTimeout(showFormError.t);
-  showFormError.t = setTimeout(() => (el.hidden = true), 2500);
+const NEW_PRODUCT_FORM = `
+  <input class="text-input" type="text" id="m-name" placeholder="Product name" autocomplete="off">
+  <div class="add-form-row">
+    <input class="text-input qty-field" type="number" id="m-qty" inputmode="numeric"
+           min="0" step="1" value="1" aria-label="Quantity">
+    <input class="text-input price-field" type="number" id="m-price" inputmode="decimal"
+           min="0" step="0.01" placeholder="Price" aria-label="Price">
+  </div>
+  <p class="form-error" hidden></p>
+  <button class="btn btn-primary modal-submit" type="submit">Add product</button>`;
+
+function openNewProductModal() {
+  modal.open({
+    title: 'New Product',
+    body: NEW_PRODUCT_FORM,
+    onSubmit: (form) => {
+      const name = form.querySelector('#m-name').value;
+      const qty = form.querySelector('#m-qty').value;
+      const price = form.querySelector('#m-price').value;
+      products.add(name, qty, price);
+      renderProductList();
+    },
+  });
 }
 
 function bindProductsView() {
-  const form = document.getElementById('add-form');
-
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const nameInput = document.getElementById('p-name');
-    const qtyInput = document.getElementById('p-qty');
-    const priceInput = document.getElementById('p-price');
-    try {
-      products.add(nameInput.value, qtyInput.value, priceInput.value);
-      nameInput.value = '';
-      qtyInput.value = '1';
-      priceInput.value = '';
-      nameInput.focus();
-      renderProductList();
-    } catch (err) {
-      showFormError(err.message);
-    }
-  });
+  document.getElementById('new-product-btn').addEventListener('click', openNewProductModal);
 
   const listEl = document.getElementById('product-list');
 
@@ -79,7 +80,7 @@ function bindProductsView() {
       try {
         products.setPrice(id, input);
       } catch (err) {
-        showFormError(err.message);
+        showToast(err.message);
         return;
       }
     } else if (action === 'del') {

@@ -111,6 +111,24 @@ UI REFINEMENTS (incremental, between phases)
     - Add form: [name] / [qty] [price] [Add], wraps on
       narrow screens.
 
+2026-10-13 | Reusable modal + New Product button  [DONE]
+  - js/modal.js: open({ title, body, onSubmit }) / close().
+    Add form moved out of the products view into a modal
+    opened by a floating "+" (FAB) on the Products screen.
+  - Decisions:
+    - Modal shell lives in index.html OUTSIDE #view so view
+      re-renders never destroy an open modal.
+    - Bottom sheet on mobile (slide-up, safe-area padding),
+      centered dialog >= 640px — thumb-friendly pattern.
+    - Close via X, overlay tap or Escape; body scroll locked
+      while open; first input autofocused.
+    - onSubmit receives the <form>; thrown errors display in
+      the form's .form-error (validation stays in products.js).
+    - Inline add form removed from the products view — FAB is
+      the single entry point for creating products.
+    - Added a small #toast element (outside #view) for errors
+      raised outside a modal (e.g. price edit via prompt).
+
 --------------------------------------------------------------
 PHASE 4 — INVENTORY MOVEMENTS  [PENDING]
 --------------------------------------------------------------

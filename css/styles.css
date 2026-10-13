@@ -287,6 +287,110 @@ code {
 
 .list-summary { text-align: center; }
 
+/* Floating action button */
+.fab {
+  position: fixed;
+  right: 16px;
+  bottom: calc(var(--nav-h) + env(safe-area-inset-bottom) + 16px);
+  width: 56px;
+  height: 56px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--accent-contrast);
+  font-size: 1.8rem;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 40;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+}
+
+.fab:active { transform: scale(0.96); filter: brightness(0.9); }
+
+/* Modal — bottom sheet on mobile, centered dialog on desktop */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.modal-overlay[hidden] { display: none; }
+
+.modal-sheet {
+  width: 100%;
+  max-width: 640px;
+  max-height: 85dvh;
+  overflow-y: auto;
+  background: var(--surface);
+  border-radius: 18px 18px 0 0;
+  padding: 16px 16px calc(16px + env(safe-area-inset-bottom));
+  animation: sheet-up 0.18s ease-out;
+}
+
+@keyframes sheet-up {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.modal-title { margin: 0; font-size: 1.1rem; font-weight: 700; }
+
+.modal-close {
+  width: 44px;
+  height: 44px;
+  margin: -10px -8px -10px 0;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.modal-close:active { color: var(--danger); }
+
+.modal-form { display: flex; flex-direction: column; gap: var(--gap); }
+
+.modal-submit { width: 100%; }
+
+/* Toast */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--nav-h) + env(safe-area-inset-bottom) + 24px);
+  transform: translateX(-50%);
+  max-width: calc(100% - 32px);
+  background: var(--surface-2);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 10px 16px;
+  font-size: 0.85rem;
+  z-index: 60;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+}
+
+@media (min-width: 640px) {
+  .modal-overlay { align-items: center; padding: 24px; }
+  .modal-sheet { border-radius: 18px; animation: dialog-in 0.15s ease-out; }
+
+  @keyframes dialog-in {
+    from { transform: scale(0.97); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+}
+
 @media (min-width: 640px) {
   .app { border-left: 1px solid var(--surface-2); border-right: 1px solid var(--surface-2); }
 }
