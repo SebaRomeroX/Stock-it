@@ -57,8 +57,8 @@ bodyEl.addEventListener('submit', (e) => {
   e.preventDefault();
   const form = e.target;
   try {
-    onSubmit?.(form);
-    close();
+    const result = onSubmit?.(form, e.submitter);
+    if (result !== false) close();
   } catch (err) {
     showError(form, err.message);
   }

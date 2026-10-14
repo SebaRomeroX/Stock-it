@@ -108,6 +108,23 @@ export function remove(id) {
   return deleted;
 }
 
+export function get(id) {
+  const list = all();
+  return list[findIndex(list, id)];
+}
+
+export function update(id, { name, price }) {
+  const list = all();
+  const index = findIndex(list, id);
+  const cleanName = String(name).trim();
+  if (!cleanName) throw new Error('Name is required');
+  list[index].name = cleanName;
+  if (price !== undefined) list[index].price = cleanPrice(price);
+  list[index].updatedAt = Date.now();
+  persist(list);
+  return list[index];
+}
+
 export function render() {
   // Out-of-stock first, original order preserved otherwise.
   const products = all().slice().sort((a, b) => {
@@ -135,8 +152,8 @@ export function render() {
             <span class="product-name">${escapeHtml(p.name)}</span>
             ${p.qty === 0 ? '<span class="stock-badge">No stock</span>' : ''}
           </div>
-          <button class="product-meta" type="button" data-action="price"
-                  aria-label="Edit price of ${escapeHtml(p.name)}">
+          <button class="product-meta" type="button" data-action="edit"
+                  aria-label="Edit ${escapeHtml(p.name)}">
             ${formatMoney(unitCents / 100)} × ${p.qty} =
             <span class="product-total">${formatMoney(cents / 100)}</span>
           </button>
@@ -148,7 +165,7 @@ export function render() {
                  aria-label="Quantity of ${escapeHtml(p.name)}">
           <button class="qty-btn" type="button" data-action="inc" aria-label="Increase quantity of ${escapeHtml(p.name)}">+</button>
         </div>
-        <button class="delete-btn" type="button" data-action="del" aria-label="Delete ${escapeHtml(p.name)}">×</button>
+        <button class="edit-btn" type="button" data-action="edit" aria-label="Edit ${escapeHtml(p.name)}">✎</button>
       </li>`;
     })
     .join('');
@@ -171,3 +188,5 @@ function escapeHtml(str) {
     .replaceAll('"', '&quot;')
     .replaceAll("'", '&#39;');
 }
+
+export { escapeHtml };

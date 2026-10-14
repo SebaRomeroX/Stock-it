@@ -57,6 +57,36 @@ function openNewProductModal() {
   });
 }
 
+function openEditModal(id) {
+  const p = products.get(id);
+  modal.open({
+    title: 'Edit Product',
+    body: `
+      <input class="text-input" type="text" id="e-name" placeholder="Product name"
+             autocomplete="off" value="${products.escapeHtml(p.name)}">
+      <input class="text-input" type="number" id="e-price" inputmode="decimal"
+             min="0" step="0.01" placeholder="Price" aria-label="Price" value="${p.price}">
+      <p class="form-error" hidden></p>
+      <div class="modal-actions">
+        <button class="btn btn-danger" type="submit" data-action="delete">Delete</button>
+        <button class="btn btn-primary" type="submit" data-action="save">Save</button>
+      </div>`,
+    onSubmit: (form, submitter) => {
+      if (submitter?.dataset.action === 'delete') {
+        if (!confirm(`Delete "${p.name}"?`)) return false; // keep modal open
+        products.remove(id);
+        renderProductList();
+        return;
+      }
+      products.update(id, {
+        name: form.querySelector('#e-name').value,
+        price: form.querySelector('#e-price').value,
+      });
+      renderProductList();
+    },
+  });
+}
+
 function bindProductsView() {
   document.getElementById('new-product-btn').addEventListener('click', openNewProductModal);
 
@@ -72,21 +102,9 @@ function bindProductsView() {
 
     if (action === 'inc') products.adjustQty(id, 1);
     else if (action === 'dec') products.adjustQty(id, -1);
-    else if (action === 'price') {
-      const name = row.querySelector('.product-name').textContent;
-      const current = row.querySelector('.product-total').textContent;
-      const input = prompt(`Price for "${name}" (${current} total):`, row.dataset.price || '0');
-      if (input === null) return;
-      try {
-        products.setPrice(id, input);
-      } catch (err) {
-        showToast(err.message);
-        return;
-      }
-    } else if (action === 'del') {
-      const name = row.querySelector('.product-name').textContent;
-      if (!confirm(`Delete "${name}"?`)) return;
-      products.remove(id);
+    else if (action === 'edit') {
+      openEditModal(id);
+      return;
     } else return;
 
     renderProductList();

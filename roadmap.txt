@@ -129,6 +129,24 @@ UI REFINEMENTS (incremental, between phases)
     - Added a small #toast element (outside #view) for errors
       raised outside a modal (e.g. price edit via prompt).
 
+2026-10-14 | Edit product modal  [DONE]
+  - Edit (pencil) button on every chip opens a modal with
+    name + price fields and a Delete / Save action row.
+    Tapping the price meta line opens the same modal.
+  - Decisions:
+    - Row's old "x" delete button REMOVED: delete now lives
+      only inside the edit modal (single entry point).
+    - prompt()-based price editing retired (was temporary).
+    - products.js grows get(id) and update(id, {name, price});
+      update validates via the existing cleanName/cleanPrice
+      paths (throws -> modal shows the error).
+    - modal.js contract: onSubmit(form, submitter) — the
+      clicked submit button is passed through so Save/Delete
+      share one submit path; returning false keeps the modal
+      open (used when the delete confirm is cancelled).
+    - escapeHtml exported from products.js for safe value=
+      attributes in the edit form.
+
 --------------------------------------------------------------
 PHASE 4 — INVENTORY MOVEMENTS  [PENDING]
 --------------------------------------------------------------

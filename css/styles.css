@@ -272,18 +272,24 @@ code {
 
 .qty-input:focus { outline: none; border-color: var(--accent); }
 
-.delete-btn {
+.edit-btn {
   width: 36px;
   height: 36px;
   border: 0;
   background: none;
   color: var(--muted);
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   line-height: 1;
   cursor: pointer;
 }
 
-.delete-btn:active { color: var(--danger); }
+.edit-btn:active { color: var(--accent); }
+
+.btn-danger { background: var(--danger); color: #fff; }
+.btn-danger:active { filter: brightness(0.9); }
+
+.modal-actions { display: flex; gap: var(--gap); }
+.modal-actions .btn { flex: 1; }
 
 .list-summary { text-align: center; }
 
